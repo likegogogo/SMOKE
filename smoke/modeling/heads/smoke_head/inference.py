@@ -36,7 +36,8 @@ class PostProcessor(nn.Module):
         pred_heatmap, pred_regression = predictions[0], predictions[1]
         batch = pred_heatmap.shape[0]
 
-        target_varibales = self.prepare_targets(targets)
+        if targets is not None:
+            target_varibales = self.prepare_targets(targets)
 
         heatmap = nms_hm(pred_heatmap)
 
@@ -58,6 +59,7 @@ class PostProcessor(nn.Module):
         pred_orientation = pred_regression_pois[:, 6:]
 
         pred_depths = self.smoke_coder.decode_depth(pred_depths_offset)
+        # import pdb; pdb.set_trace()
         pred_locations = self.smoke_coder.decode_location(
             pred_proj_points,
             pred_proj_offsets,
