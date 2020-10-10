@@ -149,7 +149,7 @@ def build_test_loader(cfg, is_train=False):
         )
         data_loaders.append(data_loader)
 
-    return data_loader
+    return data_loader  # data_loaders
 
 
 def trivial_batch_collator(batch):

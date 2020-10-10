@@ -19,6 +19,8 @@ def split(image_list, shuffle=True, ratio=0.8):
 
 
 for sub_dir in train_test_dirs:
+    if not os.path.isdir(sub_dir):
+        continue
     imageSets_path = os.path.join(kitti_path, sub_dir, "ImageSets")
     if not os.path.exists(imageSets_path):
         os.makedirs(imageSets_path)
@@ -28,7 +30,13 @@ for sub_dir in train_test_dirs:
     image_list = [img.split('.')[0] for img in image_list]
 
     image_nums = len(image_list)
-    train_split, test_split = split(image_list, ratio=0.9)
+    shuffle = True
+    if "test" in sub_dir:
+        shuffle = False
+        ratio = 0
+    else:
+        ratio = 0.9
+    train_split, test_split = split(image_list, shuffle=shuffle, ratio=ratio)
 
     save_string_list(os.path.join(imageSets_path, "train.txt"), train_split)
     save_string_list(os.path.join(imageSets_path, "trainval.txt"), test_split)
